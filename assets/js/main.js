@@ -9,14 +9,27 @@ let platforms = [];
 let objects = [];
 
 function setup() {
-  AIR_FRICTION = createVector(0.05, 0.05);
-  LIQUID_FRICTION = createVector(0.1, 0.1);
-  collideDebug(true);
-  createCanvas(GRIDSIZE * 40, GRIDSIZE * 40);
+  new Canvas(GRIDSIZE * 40, GRIDSIZE * 40);
+  world.gravity.y = GRIDSIZE;
 
-  player = new Player(GRIDSIZE * 4, height - GRIDSIZE * 6);
+  //             	( x,  y,  w,  h, collider)
+  player = new Sprite(
+    GRIDSIZE * 4,
+    height - GRIDSIZE * 6,
+    GRIDSIZE * 2,
+    GRIDSIZE * 2,
+    "d"
+  );
+  //player = new Player(GRIDSIZE * 4, height - GRIDSIZE * 6);
 
-  platforms.push(
+  floor = new Sprite();
+  floor.x = GRIDSIZE * 20;
+  floor.y = GRIDSIZE * 40;
+  floor.w = GRIDSIZE * 40;
+  floor.h = GRIDSIZE;
+  floor.collider = "static";
+
+  /*platforms.push(
     new Platform(
       GRIDSIZE * 4,
       height - GRIDSIZE * 7,
@@ -47,56 +60,16 @@ function setup() {
       GRIDSIZE * 16,
       height - GRIDSIZE * 6
     )
-  );
+  );*/
 }
-function keyPressed() {
-  //console.log(keyCode);
-  //w
-  if (keyCode === 87 || keyCode === 32) {
-    player.keysPressed.w = true;
-  }
-  //s
-  if (keyCode === 83) {
-    player.keysPressed.s = true;
-  }
-  //a
-  if (keyCode === 65) {
-    player.keysPressed.a = true;
-  }
-  //d
-  if (keyCode === 68) {
-    player.keysPressed.d = true;
-  }
-}
-function keyReleased() {
-  //console.log(keyCode);
-  //w
-  if (keyCode === 87 || keyCode === 32) {
-    player.keysPressed.w = false;
-  }
-  //s
-  if (keyCode === 83) {
-    player.keysPressed.s = false;
-  }
-  //a
-  if (keyCode === 65) {
-    player.keysPressed.a = false;
-  }
-  //d
-  if (keyCode === 68) {
-    player.keysPressed.d = false;
-  }
-}
+
 
 function draw() {
   background(220);
 
-  player.update(GRAVITY);
+  if (kb.pressing("left")) player.vel.x = -GRIDSIZE/2;
+  else if (kb.pressing("right")) player.vel.x = GRIDSIZE/2;
+  else player.vel.x = 0;
 
-  platforms.forEach((obj) => {
-    obj.update();
-  });
-  objects.forEach((obj) => {
-    obj.update();
-  });
+  if (kb.pressing("space")) player.vel.y = -GRIDSIZE/2;
 }

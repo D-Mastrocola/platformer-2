@@ -11,6 +11,10 @@ class Player {
       s: false,
       d: false,
     };
+
+    this.sprite = new Sprite();
+    this.sprite.d = 2*GRIDSIZE;
+    this.sprite.pos = { x: x, y: y };
   }
   accelerate(gravity) {
     if (this.keysPressed.w) {
@@ -57,7 +61,7 @@ class Player {
           this.size.y
         )
       ) {
-        console.log("left");
+        //left
         this.position.x = obj.position.x - this.size.x;
       } else if (
         collideLineRect(
@@ -71,7 +75,7 @@ class Player {
           this.size.y
         )
       ) {
-        console.log("right");
+        //right
         this.position.x = obj.position.x + obj.size.x;
       } else if (
         collideLineRect(
@@ -86,7 +90,7 @@ class Player {
         )
       ) {
         //Top of platform collision
-        console.log("top");
+
         this.position.y = obj.position.y - this.size.y;
         this.jumps = 1;
         this.speed.y = 0;
@@ -102,12 +106,13 @@ class Player {
           this.size.y
         )
       ) {
-        console.log("bottom");
+        //bottom
         this.position.y = obj.position.y + obj.size.y;
         this.speed.y = 0;
       }
     });
     objects.forEach((obj) => {
+      console.log("checking");
       if (collideRectRect(obj.position, obj.size, this.position, this.size)) {
         console.log(this.speed.mag());
         if (this.speed.mag() > 20) {
